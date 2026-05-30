@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>大阪・京都車站附近景點</title>
+  <style>
+    :root {
+      --bg: #f7f5ef;
+      --card: #ffffff;
+      --text: #20231f;
+      --muted: #5d665f;
+      --line: #ded8ca;
+      --accent: #2f6f65;
+      --accent-2: #8b4b2b;
+      --soft: #e8f2ef;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "Noto Sans JP", sans-serif;
+      line-height: 1.55;
+    }
+    header {
+      padding: 22px 16px 14px;
+      background: #fffdf8;
+      border-bottom: 1px solid var(--line);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      letter-spacing: 0;
+    }
+    .note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 12px;
+      background: rgba(247, 245, 239, 0.96);
+      border-bottom: 1px solid var(--line);
+      -webkit-overflow-scrolling: touch;
+    }
+    nav a, .jump-links a, .actions a {
+      flex: 0 0 auto;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid #b8d2cc;
+      border-radius: 999px;
+      background: #fff;
+      padding: 8px 11px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    main { padding: 14px 12px 28px; max-width: 980px; margin: 0 auto; }
+    section { margin: 18px 0 26px; }
+    .city-section {
+      margin: 28px -12px 34px;
+      padding: 18px 12px 22px;
+      border-top: 5px solid;
+      border-bottom: 1px solid var(--line);
+    }
+    .city-section.kyoto {
+      background: #fffaf1;
+      border-top-color: #8b4b2b;
+    }
+    .city-section.osaka {
+      background: #eef7f5;
+      border-top-color: #2f6f65;
+    }
+    .city-hero {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--line);
+    }
+    .city-label {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
+      color: #fff;
+    }
+    .kyoto .city-label { background: #8b4b2b; }
+    .osaka .city-label { background: #2f6f65; }
+    .city-hero h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .city-hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      color: var(--accent);
+    }
+    h3 {
+      margin: 18px 0 8px;
+      font-size: 16px;
+      color: var(--accent-2);
+      scroll-margin-top: 64px;
+    }
+    .day-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .day-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--accent);
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .day-card.kyoto-day { border-left-color: #8b4b2b; }
+    .day-card.osaka-day { border-left-color: #2f6f65; }
+    .day-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .day-head h3 {
+      margin: 0;
+      font-size: 17px;
+      scroll-margin-top: 64px;
+    }
+    .route {
+      margin: 8px 0;
+      padding: 9px;
+      border-radius: 8px;
+      background: #f8fbfa;
+      border: 1px solid #d8e7e3;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .plan-list {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      font-size: 14px;
+    }
+    .plan-list li { margin: 5px 0; }
+    .backup {
+      margin-top: 9px;
+      padding: 9px;
+      border-radius: 8px;
+      background: #fff8e9;
+      border: 1px solid #ead7ad;
+      font-size: 14px;
+    }
+    .backup strong { color: #7b4a12; }
+    .jump-links {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 0 10px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .grid {
+      display: grid;
+      gap: 10px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .card-title {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .card-title strong { font-size: 16px; }
+    .badge {
+      flex: 0 0 auto;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--accent);
+      padding: 3px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .meta {
+      margin: 4px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .why { margin: 8px 0; font-size: 14px; }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 8px 0;
+    }
+    .tag {
+      border: 1px solid #e2d3bd;
+      border-radius: 999px;
+      padding: 3px 7px;
+      color: #6b4a21;
+      background: #fff7e8;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .map-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 9px 0;
+    }
+    .map-links a {
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid #b8d2cc;
+      border-radius: 999px;
+      background: #fff;
+      padding: 7px 10px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+    table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 13px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px;
+      vertical-align: top;
+      text-align: left;
+      overflow-wrap: anywhere;
+    }
+    th {
+      background: var(--soft);
+      color: #25463f;
+      white-space: nowrap;
+    }
+    th:first-child, td:first-child { width: 130px; font-weight: 700; }
+    th:nth-child(2), td:nth-child(2) { width: 150px; }
+    th:nth-child(3), td:nth-child(3) { width: 190px; }
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (min-width: 760px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .city-section {
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 16px;
+        padding-right: 16px;
+        border-radius: 10px;
+        border-left: 1px solid var(--line);
+        border-right: 1px solid var(--line);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>大阪・京都車站附近景點</h1>
+    <p class="note">搭車自由行用。優先挑車站旁、少轉乘、可彈性塞進半天或雨天的景點。</p>
+  </header>
+
+  <nav>
+    <a href="index.html">美食清單</a>
+    <a href="#base">住宿/交通</a>
+    <a href="#itinerary">行程安排</a>
+    <a href="#kyoto">京都</a>
+    <a href="#osaka">大阪</a>
+    <a href="#sources">來源</a>
+  </nav>
+
+  <main>
+    <section id="base">
+      <h2>住宿與跨城交通</h2>
+      <div class="grid">
+        <article class="card">
+          <div class="card-title"><strong>京都住宿｜Konoha Yura Machiya Holiday House</strong><span class="badge">二條/聚樂廻</span></div>
+          <p class="meta">京都府 京都市 聚楽廻東町31-10</p>
+          <p class="why">基準站抓 JR 二條站/地下鐵二條站。Day1 二條城、Day3 嵐山都算順。</p>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=Konoha%20Yura%20Machiya%20Holiday%20House%20%E8%81%9A%E6%A5%BD%E5%BB%BB%E6%9D%B1%E7%94%BA31-10%20%E4%BA%AC%E9%83%BD">Google Maps</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>大阪住宿｜米2 心斎橋エリアど真ん中 2LDK</strong><span class="badge">心齋橋/長堀橋</span></div>
+          <p class="meta">大阪府 大阪市 中央区東心斎橋1丁目8-24｜2樓，無電梯</p>
+          <p class="why">基準站抓長堀橋站、心齋橋站。行李日要注意沒有電梯，建議先確認入住/寄放方式。</p>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E9%98%AA%E5%B8%82%20%E4%B8%AD%E5%A4%AE%E5%8C%BA%E6%9D%B1%E5%BF%83%E6%96%8E%E6%A9%8B1%E4%B8%81%E7%9B%AE8-24">Google Maps</a></div>
+        </article>
+      </div>
+      <div class="backup"><strong>京都到大阪建議路線：</strong>京都住宿附近 → JR 二條站 → 京都站 → JR 京都線到大阪站 → Osaka Metro 御堂筋線 梅田站 → 心齋橋站，或轉堺筋線到長堀橋站。若 Day3 從嵐山出發，走 JR 嵯峨嵐山 → 京都站 → 大阪站 → 心齋橋/長堀橋。</div>
+      <div class="map-links">
+        <a href="https://www.google.com/maps/dir/?api=1&origin=Konoha%20Yura%20Machiya%20Holiday%20House%20Kyoto&destination=%E5%A4%A7%E9%98%AA%E5%B8%82%20%E4%B8%AD%E5%A4%AE%E5%8C%BA%E6%9D%B1%E5%BF%83%E6%96%8E%E6%A9%8B1%E4%B8%81%E7%9B%AE8-24&travelmode=transit">京都住宿 → 大阪住宿</a>
+        <a href="https://www.google.com/maps/dir/?api=1&origin=%E5%B5%AF%E5%B3%A8%E5%B5%90%E5%B1%B1%E9%A7%85&destination=%E5%A4%A7%E9%98%AA%E5%B8%82%20%E4%B8%AD%E5%A4%AE%E5%8C%BA%E6%9D%B1%E5%BF%83%E6%96%8E%E6%A9%8B1%E4%B8%81%E7%9B%AE8-24&travelmode=transit">嵐山 → 大阪住宿</a>
+      </div>
+    </section>
+
+    <section id="itinerary">
+      <h2>每日行程安排</h2>
+      <p class="note">以搭車自由行為前提，主線只放當天最順的點；備案是時間多、下雨、太累或臨時想改時可替換的點。</p>
+
+      <div class="day-grid">
+        <article class="day-card kyoto-day">
+          <div class="day-head">
+            <h3>Day 1｜6/16 抵達京都 → 二條城</h3>
+            <span class="badge">京都</span>
+          </div>
+          <div class="route">關西機場 → Haruka → 京都站 → 飯店放行李 → 二條城前站 → 二條城周邊晚餐</div>
+          <div class="map-links">
+            <a href="https://www.google.com/maps/search/?api=1&query=Konoha%20Yura%20Machiya%20Holiday%20House%20%E4%BA%AC%E9%83%BD">京都住宿</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=%E4%BA%8C%E6%A2%9D%E5%9F%8E">二條城</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=%E4%BA%AC%E9%83%BD%E9%A7%85">京都站</a>
+          </div>
+          <ol class="plan-list">
+            <li>到京都站後先處理行李，不建議第一天塞太多景點。</li>
+            <li>二條城若抵達時間太晚，可改成只看外圍、附近散步和吃晚餐。</li>
+            <li>晚餐優先找二條城/壬生附近，避免再拉回河原町。</li>
+          </ol>
+          <div class="backup"><strong>備案：</strong>京都車站大樓、京都塔、東本願寺。若飛機或 Haruka 延誤，直接留在京都站周邊最穩。</div>
+        </article>
+
+        <article class="day-card kyoto-day">
+          <div class="day-head">
+            <h3>Day 2｜6/17 清水寺 → 伏見稻荷 → 晚餐：挽肉と米 京都</h3>
+            <span class="badge">京都</span>
+          </div>
+          <div class="route">清水五條/祇園四條 → 清水寺・二寧坂三年坂 → 京阪移動 → 伏見稻荷 → 祇園四條晚餐</div>
+          <div class="map-links">
+            <a href="https://www.google.com/maps/search/?api=1&query=%E6%B8%85%E6%B0%B4%E5%AF%BA">清水寺</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=%E4%BC%8F%E8%A6%8B%E7%A8%B2%E8%8D%B7%E5%A4%A7%E7%A4%BE">伏見稻荷</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=%E6%8C%BD%E8%82%89%E3%81%A8%E7%B1%B3%20%E4%BA%AC%E9%83%BD">挽肉と米 京都</a>
+          </div>
+          <ol class="plan-list">
+            <li>清水寺建議早點去，二寧坂、三年坂、八坂塔一路慢慢走。</li>
+            <li>伏見稻荷放下午，若體力有限走到千本鳥居代表段即可，不必攻頂。</li>
+            <li>晚餐「挽肉と米 京都」要預留排隊或候位時間；親子丼可改成午餐或備案。</li>
+          </ol>
+          <div class="backup"><strong>備案：</strong>祇園、八坂神社、花見小路、錦市場。下雨時可減少清水寺周邊坡道，改逛四條河原町/錦市場。</div>
+        </article>
+
+        <article class="day-card kyoto-day">
+          <div class="day-head">
+            <h3>Day 3｜6/18 嵐山 → 京都轉大阪 → 心齋橋</h3>
+            <span class="badge">京都→大阪</span>
+          </div>
+          <div class="route">京都住宿 → JR 嵯峨嵐山 → 渡月橋・竹林 → 京都取行李或直接帶行李去大阪 → 大阪住宿 → 心齋橋 → 19:00 肉匠燒肉</div>
+          <div class="map-links">
+            <a href="https://www.google.com/maps/search/?api=1&query=%E6%B8%A1%E6%9C%88%E6%A9%8B%20%E5%B5%90%E5%B1%B1">渡月橋</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=%E5%B5%90%E5%B1%B1%20%E7%AB%B9%E6%9E%97%E5%B0%8F%E5%BE%91">竹林小徑</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=%E9%9B%A3%E6%B3%A2%E7%A5%9E%E7%A4%BE">難波神社</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=%E5%BF%83%E9%BD%8B%E6%A9%8B%E7%AD%8B%E5%95%86%E5%BA%97%E8%A1%97">心齋橋筋</a>
+            <a href="https://maps.app.goo.gl/xnceZvoUzmqXoerE6">19:00 肉匠燒肉</a>
+          </div>
+          <ol class="plan-list">
+            <li>嵐山上午去，主線只排渡月橋、河邊、竹林，不要再塞太遠寺院。</li>
+            <li>若京都站或嵐山不好找行李寄放，備案是直接帶行李去大阪住宿；大阪住宿在 2 樓且無電梯，行李時間要抓保守。</li>
+            <li>下午回京都拿行李後轉大阪，或嵐山結束直接轉大阪，先入住/放行李，再去心齋橋。</li>
+            <li>2026/06/18 19:00 JST 已預訂心齋橋「肉匠燒肉」，建議 17:30 前完成入住/放行李。</li>
+          </ol>
+          <div class="backup"><strong>備案：</strong>嵐山若下雨，改京都車站/梅小路公園/鐵道博物館；若行李寄放不順，直接取消難波神社，優先大阪住宿、心齋橋買衣服、19:00 肉匠燒肉。</div>
+        </article>
+
+        <article class="day-card osaka-day">
+          <div class="day-head">
+            <h3>Day 4｜6/19 環球影城</h3>
+            <span class="badge">大阪</span>
+          </div>
+          <div class="route">住宿地 → 西九條轉 JR ゆめ咲線 → Universal City → USJ 一整天</div>
+          <div class="map-links">
+            <a href="https://www.google.com/maps/search/?api=1&query=Universal%20Studios%20Japan">環球影城</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=Universal%20CityWalk%20Osaka">CityWalk</a>
+            <a href="https://www.google.com/maps/dir/?api=1&origin=%E5%A4%A7%E9%98%AA%E5%B8%82%20%E4%B8%AD%E5%A4%AE%E5%8C%BA%E6%9D%B1%E5%BF%83%E6%96%8E%E6%A9%8B1%E4%B8%81%E7%9B%AE8-24&destination=Universal%20Studios%20Japan&travelmode=transit">大阪住宿 → USJ</a>
+          </div>
+          <ol class="plan-list">
+            <li>已買票，這天不要排其他正式景點。</li>
+            <li>早餐和補水先處理好，入園後以設施/表演為主。</li>
+            <li>晚餐可在 CityWalk 解決，回難波或梅田後再吃會比較晚。</li>
+          </ol>
+          <div class="backup"><strong>備案：</strong>若提早離園，可在 Universal CityWalk 吃飯、買伴手禮；不要再拉去大阪城或阿倍野，移動成本高。</div>
+        </article>
+
+        <article class="day-card osaka-day">
+          <div class="day-head">
+            <h3>Day 5｜6/20 大阪城 → 通天閣 → 阿倍野觀景台</h3>
+            <span class="badge">大阪</span>
+          </div>
+          <div class="route">森之宮/大阪城公園 → 大阪城 → 動物園前/新今宮 → 通天閣・新世界 → 天王寺/阿倍野 Harukas</div>
+          <div class="map-links">
+            <a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E9%98%AA%E5%9F%8E">大阪城</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=%E9%80%9A%E5%A4%A9%E9%96%A3">通天閣</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=%E6%96%B0%E4%B8%96%E7%95%8C%20%E5%A4%A7%E9%98%AA">新世界</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=%E3%81%82%E3%81%B9%E3%81%AE%E3%83%8F%E3%83%AB%E3%82%AB%E3%82%B9%20300">阿倍野 Harukas 300</a>
+          </div>
+          <ol class="plan-list">
+            <li>大阪城公園很大，建議從森之宮進，走到天守閣後視體力決定是否入館。</li>
+            <li>通天閣和新世界適合接午餐或下午小吃。</li>
+            <li>阿倍野觀景台放傍晚到晚上最好，天氣好再上去。</li>
+          </ol>
+          <div class="backup"><strong>備案：</strong>雨天可把大阪城縮短，改增加阿倍野 Q's Mall、天王寺 MIO；若很累，通天閣只看外觀和新世界吃飯。</div>
+        </article>
+
+        <article class="day-card osaka-day">
+          <div class="day-head">
+            <h3>Day 6｜6/21 海遊館 → 摩天輪 → LEGO → 北極星蛋包飯</h3>
+            <span class="badge">大阪港</span>
+          </div>
+          <div class="route">大阪港站 → 海遊館 → 天保山 Marketplace → LEGO Discovery Center → 天保山摩天輪 → 北極星蛋包飯 天保山店</div>
+          <div class="map-links">
+            <a href="https://www.google.com/maps/search/?api=1&query=%E6%B5%B7%E9%81%8A%E9%A4%A8">海遊館</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A9%E4%BF%9D%E5%B1%B1%E5%A4%A7%E8%A6%B3%E8%A6%A7%E8%BB%8A">天保山摩天輪</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=LEGOLAND%20Discovery%20Center%20Osaka">LEGO Discovery Center</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=%E5%8C%97%E6%A5%B5%E6%98%9F%20%E5%A4%A9%E4%BF%9D%E5%B1%B1%E5%BA%97">北極星蛋包飯</a>
+          </div>
+          <ol class="plan-list">
+            <li>這天集中大阪港，同區移動，最適合親子/雨天/不想一直轉車。</li>
+            <li>海遊館建議當天主景點，其他都當同區加點。</li>
+            <li>北極星蛋包飯就在天保山區，排在午餐或晚餐都順。</li>
+          </ol>
+          <div class="backup"><strong>備案：</strong>若海遊館人太多，先吃飯或逛 Marketplace；若天氣好可加大阪港邊散步，若下雨就留在室內。</div>
+        </article>
+
+        <article class="day-card osaka-day">
+          <div class="day-head">
+            <h3>Day 7｜6/22 梅田</h3>
+            <span class="badge">大阪</span>
+          </div>
+          <div class="route">大阪/梅田站 → Grand Front・LUCUA・阪急/阪神百貨 → 梅田藍天大廈 → 晚餐</div>
+          <div class="map-links">
+            <a href="https://www.google.com/maps/search/?api=1&query=Grand%20Front%20Osaka">Grand Front</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=LUCUA%20Osaka">LUCUA</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=%E6%A2%85%E7%94%B0%E8%97%8D%E5%A4%A9%E5%A4%A7%E5%BB%88%20%E7%A9%BA%E4%B8%AD%E5%BA%AD%E5%9C%92">梅田藍天大廈</a>
+          </div>
+          <ol class="plan-list">
+            <li>梅田地下街複雜，這天不要排太多跨區移動，專心逛梅田比較舒服。</li>
+            <li>梅田藍天大廈建議傍晚或夜景，天氣不好就改百貨/地下街。</li>
+            <li>可把最後購物、伴手禮、退稅集中在這天。</li>
+          </ol>
+          <div class="backup"><strong>備案：</strong>中之島公園/中央公會堂適合晴天半天；雨天或想在地商店街可去天神橋筋商店街＋大阪生活今昔館；晚上想要非購物行程可排 teamLab Botanical Garden Osaka；想再買衣服就回心齋橋。</div>
+        </article>
+
+        <article class="day-card osaka-day">
+          <div class="day-head">
+            <h3>Day 8｜6/23 搭飛機</h3>
+            <span class="badge">離境</span>
+          </div>
+          <div class="route">住宿地 → 依航班時間前往關西機場</div>
+          <div class="map-links">
+            <a href="https://www.google.com/maps/search/?api=1&query=%E9%97%9C%E8%A5%BF%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4">關西機場</a>
+            <a href="https://www.google.com/maps/dir/?api=1&origin=%E5%A4%A7%E9%98%AA%E5%B8%82%20%E4%B8%AD%E5%A4%AE%E5%8C%BA%E6%9D%B1%E5%BF%83%E6%96%8E%E6%A9%8B1%E4%B8%81%E7%9B%AE8-24&destination=%E9%97%9C%E8%A5%BF%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4&travelmode=transit">大阪住宿 → 機場</a>
+          </div>
+          <ol class="plan-list">
+            <li>最後一天不要排需要預約或排隊的景點。</li>
+            <li>若住難波，可回補道具屋筋、難波 City、心齋橋短逛。</li>
+            <li>若住梅田，可回補 LUCUA、阪急百貨、Grand Front。</li>
+          </ol>
+          <div class="backup"><strong>備案：</strong>只安排車站周邊購物/咖啡，至少保留充足機場交通時間。</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="kyoto" class="city-section kyoto">
+      <div class="city-hero">
+        <span class="city-label">KYOTO</span>
+        <h2>京都</h2>
+        <p>以京都車站為中心，優先挑 JR、地下鐵、京阪、阪急能順路抵達的景點。適合半天、到站日、離開日前補點。</p>
+      </div>
+      <div class="jump-links">
+        <a href="#kyoto-station">京都車站</a>
+        <a href="#fushimi">伏見稻荷</a>
+        <a href="#arashiyama">嵐山</a>
+        <a href="#central-kyoto">四條/二條</a>
+        <a href="#uji">宇治</a>
+      </div>
+
+      <h3 id="kyoto-station">京都車站周邊</h3>
+      <div class="grid">
+        <article class="card">
+          <div class="card-title"><strong>京都車站大樓・京都塔</strong><span class="badge">京都站</span></div>
+          <p class="meta">JR/地下鐵/近鐵 京都站｜步行 0-5 分</p>
+          <p class="why">到站日、雨天、等車都好用。車站本身可逛，京都塔也適合當作短時間展望點。</p>
+          <div class="tags"><span class="tag">雨天</span><span class="tag">短時間</span><span class="tag">購物</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E4%BA%AC%E9%83%BD%E9%A7%85%20%E4%BA%AC%E9%83%BD%E3%82%BF%E3%83%AF%E3%83%BC">Google Maps</a><a href="https://kyoto.travel/en/areas/around-kyoto-station/">官方區域</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>東本願寺・西本願寺</strong><span class="badge">京都站</span></div>
+          <p class="meta">京都站北側｜步行約 7-15 分</p>
+          <p class="why">不想再搭車時可排。寺院尺度大、早上也能安排，適合 Day1 或 Day8。</p>
+          <div class="tags"><span class="tag">寺院</span><span class="tag">步行</span><span class="tag">安靜</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E6%9D%B1%E6%9C%AC%E9%A1%98%E5%AF%BA%20%E8%A5%BF%E6%9C%AC%E9%A1%98%E5%AF%BA%20%E4%BA%AC%E9%83%BD%E9%A7%85">Google Maps</a><a href="https://kyoto.travel/en/areas/around-kyoto-station/">官方區域</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>東寺</strong><span class="badge">東寺站</span></div>
+          <p class="meta">近鐵 東寺站｜或京都站步行約 15 分</p>
+          <p class="why">五重塔很有京都感，從京都站可步行或搭一站近鐵，動線簡單。</p>
+          <div class="tags"><span class="tag">寺院</span><span class="tag">地標</span><span class="tag">半天</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E6%9D%B1%E5%AF%BA%20%E4%BA%AC%E9%83%BD">Google Maps</a><a href="https://kyoto.travel/en/areas/around-kyoto-station/">官方區域</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>梅小路公園・京都鐵道博物館</strong><span class="badge">梅小路京都西</span></div>
+          <p class="meta">JR 梅小路京都西站｜下車即到</p>
+          <p class="why">適合想慢走或帶小孩、遇到天氣不穩時。從京都站搭 JR 一站，控時容易。</p>
+          <div class="tags"><span class="tag">公園</span><span class="tag">室內備案</span><span class="tag">親子</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E6%A2%85%E5%B0%8F%E8%B7%AF%E5%85%AC%E5%9C%92%20%E4%BA%AC%E9%83%BD%E9%90%B5%E9%81%93%E5%8D%9A%E7%89%A9%E9%A4%A8">Google Maps</a><a href="https://kyoto.travel/en/areas/around-kyoto-station/">官方區域</a></div>
+        </article>
+      </div>
+
+      <h3 id="fushimi">伏見稻荷・伏見</h3>
+      <div class="grid">
+        <article class="card">
+          <div class="card-title"><strong>伏見稻荷大社</strong><span class="badge">JR 稻荷</span></div>
+          <p class="meta">JR 稻荷站下車即到｜京都站搭 JR 奈良線約 9 分</p>
+          <p class="why">最適合搭車自由行的京都景點之一。官方建議搭 JR 或京阪，避免公車時間不穩。</p>
+          <div class="tags"><span class="tag">必去</span><span class="tag">車站旁</span><span class="tag">早上佳</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E4%BC%8F%E8%A6%8B%E7%A8%B2%E8%8D%B7%E5%A4%A7%E7%A4%BE">Google Maps</a><a href="https://kyoto.travel/en/info/transportation/fushimi_inari.html">官方交通</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>伏見酒藏・月桂冠大倉記念館</strong><span class="badge">中書島</span></div>
+          <p class="meta">京阪 中書島/伏見桃山｜步行約 5-10 分</p>
+          <p class="why">比伏見稻荷安靜，可看酒藏、河道與老街。適合想多走一個京都南側區域。</p>
+          <div class="tags"><span class="tag">酒藏</span><span class="tag">老街</span><span class="tag">散步</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E6%9C%88%E6%A1%82%E5%86%A0%E5%A4%A7%E5%80%89%E8%A8%98%E5%BF%B5%E9%A4%A8">Google Maps</a><a href="https://www.kyoto.travel/en/see-and-do/area_fushimi.html">官方區域</a></div>
+        </article>
+      </div>
+
+      <h3 id="arashiyama">嵐山</h3>
+      <div class="grid">
+        <article class="card">
+          <div class="card-title"><strong>渡月橋・桂川河岸</strong><span class="badge">嵐山</span></div>
+          <p class="meta">JR 嵯峨嵐山 / 阪急嵐山 / 嵐電嵐山｜步行約 5-15 分</p>
+          <p class="why">晴天優先，吃飯和散步都好安排。人多時不要塞太多點，保留河邊時間。</p>
+          <div class="tags"><span class="tag">河景</span><span class="tag">散步</span><span class="tag">晴天</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E6%B8%A1%E6%9C%88%E6%A9%8B%20%E5%B5%90%E5%B1%B1">Google Maps</a><a href="https://kyoto.travel/en/getting-around/getting-around-kyoto-by-subway-train/">官方交通</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>竹林小徑・天龍寺周邊</strong><span class="badge">嵯峨嵐山</span></div>
+          <p class="meta">JR 嵯峨嵐山站｜步行約 10-15 分</p>
+          <p class="why">經典但人多。建議早到，和渡月橋排同半天即可。</p>
+          <div class="tags"><span class="tag">經典</span><span class="tag">早上佳</span><span class="tag">步行多</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E5%B5%90%E5%B1%B1%20%E7%AB%B9%E6%9E%97%E5%B0%8F%E5%BE%91%20%E5%A4%A9%E9%BE%8D%E5%AF%BA">Google Maps</a><a href="https://kyoto.travel/en/getting-around/getting-around-kyoto-by-subway-train/">官方交通</a></div>
+        </article>
+      </div>
+
+      <h3 id="central-kyoto">四條河原町・二條城</h3>
+      <div class="grid">
+        <article class="card">
+          <div class="card-title"><strong>錦市場・新京極・寺町</strong><span class="badge">四條河原町</span></div>
+          <p class="meta">阪急 京都河原町 / 地下鐵 四條｜步行約 3-10 分</p>
+          <p class="why">逛街、買伴手禮、雨天備案都好用。和晚餐、甜點動線容易接。</p>
+          <div class="tags"><span class="tag">逛街</span><span class="tag">雨天</span><span class="tag">小吃</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E9%8C%A6%E5%B8%82%E5%A0%B4%20%E6%96%B0%E4%BA%AC%E6%A5%B5%20%E5%AF%BA%E7%94%BA%20%E4%BA%AC%E9%83%BD">Google Maps</a><a href="https://kyoto.travel/en/see-and-do/area_central.html">官方區域</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>二條城</strong><span class="badge">二條城前</span></div>
+          <p class="meta">地下鐵 二條城前站｜步行約 2 分</p>
+          <p class="why">站到景點很近，適合 Day1 或半天。和烏丸御池、三條、河原町容易接。</p>
+          <div class="tags"><span class="tag">世界遺產</span><span class="tag">半天</span><span class="tag">車站近</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E4%BA%8C%E6%A2%9D%E5%9F%8E">Google Maps</a><a href="https://kyoto.travel/en/see-and-do/area_central.html">官方區域</a></div>
+        </article>
+      </div>
+
+      <h3 id="uji">宇治</h3>
+      <div class="grid">
+        <article class="card">
+          <div class="card-title"><strong>平等院・宇治川・抹茶街</strong><span class="badge">JR/京阪 宇治</span></div>
+          <p class="meta">JR 宇治 / 京阪宇治｜步行約 10 分內串起主區域</p>
+          <p class="why">從京都搭 JR 可到，適合想避開市區人潮。抹茶、河邊、世界遺產可排半天。</p>
+          <div class="tags"><span class="tag">抹茶</span><span class="tag">河景</span><span class="tag">半天</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E5%B9%B3%E7%AD%89%E9%99%A2%20%E5%AE%87%E6%B2%BB">Google Maps</a><a href="https://kyoto.travel/en/getting-around/getting-around-kyoto-by-subway-train/">官方交通</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="osaka" class="city-section osaka">
+      <div class="city-hero">
+        <span class="city-label">OSAKA</span>
+        <h2>大阪</h2>
+        <p>以梅田、難波、天王寺、大阪港這幾個大站為主，挑下車後能直接逛、吃飯選擇多、遇雨也能調整的景點。</p>
+      </div>
+      <div class="jump-links">
+        <a href="#umeda">梅田</a>
+        <a href="#namba">難波/心齋橋</a>
+        <a href="#tennoji">天王寺/阿倍野</a>
+        <a href="#osaka-castle">大阪城</a>
+        <a href="#bay">大阪港</a>
+        <a href="#tenma">天滿/天神橋筋</a>
+        <a href="#nakanoshima">中之島</a>
+        <a href="#nagai">長居</a>
+      </div>
+
+      <h3 id="umeda">梅田・大阪站</h3>
+      <div class="grid">
+        <article class="card">
+          <div class="card-title"><strong>梅田藍天大廈 空中庭園</strong><span class="badge">大阪站</span></div>
+          <p class="meta">JR 大阪站步行約 7-9 分</p>
+          <p class="why">Day7 梅田最適合加的展望點。傍晚到夜景都好，天氣差則改商場地下街。</p>
+          <div class="tags"><span class="tag">夜景</span><span class="tag">展望台</span><span class="tag">梅田</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E6%A2%85%E7%94%B0%E8%97%8D%E5%A4%A9%E5%A4%A7%E5%BB%88%20%E7%A9%BA%E4%B8%AD%E5%BA%AD%E5%9C%92">Google Maps</a><a href="https://osaka-info.jp/en/spot/umeda-sky-building/">官方頁</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>Grand Front Osaka・地下街</strong><span class="badge">大阪站</span></div>
+          <p class="meta">JR 大阪站直結/步行數分</p>
+          <p class="why">購物、咖啡、雨天備案。適合不想再移動時，把 Day7 做成彈性日。</p>
+          <div class="tags"><span class="tag">購物</span><span class="tag">雨天</span><span class="tag">少走路</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=Grand%20Front%20Osaka">Google Maps</a><a href="https://mice.osaka-info.jp/en/businesses/areas/umeda/">官方區域</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>HEP FIVE 摩天輪</strong><span class="badge">梅田</span></div>
+          <p class="meta">阪急大阪梅田站步行約 3 分｜JR 大阪站步行約 4 分</p>
+          <p class="why">比梅田藍天大廈更短時間、離逛街區更近。Day7 想快速補一個展望/拍照點可選。</p>
+          <div class="tags"><span class="tag">摩天輪</span><span class="tag">短時間</span><span class="tag">逛街順路</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=HEP%20FIVE%20%E6%91%A9%E5%A4%A9%E8%BC%AA">Google Maps</a><a href="https://osaka-info.jp/experience/en/osaka/spot/231">官方頁</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>露天神社・お初天神商店街</strong><span class="badge">東梅田</span></div>
+          <p class="meta">東梅田站/梅田站｜步行約 5-10 分</p>
+          <p class="why">梅田晚餐前後可順路走，商店街餐廳多。比大型百貨更有大阪街區感。</p>
+          <div class="tags"><span class="tag">神社</span><span class="tag">商店街</span><span class="tag">晚餐前後</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E9%9C%B2%E5%A4%A9%E7%A5%9E%E7%A4%BE%20%E3%81%8A%E5%88%9D%E5%A4%A9%E7%A5%9E%E5%95%86%E5%BA%97%E8%A1%97">Google Maps</a><a href="https://osaka-info.jp/experience/cn/osaka/spot/570">官方頁</a></div>
+        </article>
+      </div>
+
+      <h3 id="namba">難波・心齋橋</h3>
+      <div class="grid">
+        <article class="card">
+          <div class="card-title"><strong>道頓堀・戎橋筋商店街</strong><span class="badge">難波</span></div>
+          <p class="meta">各線 難波站｜下車即逛</p>
+          <p class="why">大阪感最強，和晚餐、章魚燒、大阪燒動線重疊。人多但好控時。</p>
+          <div class="tags"><span class="tag">經典</span><span class="tag">逛街</span><span class="tag">夜晚</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E9%81%93%E9%A0%93%E5%A0%80%20%E6%88%8E%E6%A9%8B%E7%AD%8B%E5%95%86%E5%BA%97%E8%A1%97">Google Maps</a><a href="https://osaka-info.jp/experience/en/osaka/spot/480">官方頁</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>心齋橋筋商店街</strong><span class="badge">心齋橋</span></div>
+          <p class="meta">大阪 Metro 心齋橋站｜步行約 1 分</p>
+          <p class="why">買衣服最順，雨天也能走。可一路接到道頓堀和難波。</p>
+          <div class="tags"><span class="tag">買衣服</span><span class="tag">雨天</span><span class="tag">長街</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E5%BF%83%E9%BD%8B%E6%A9%8B%E7%AD%8B%E5%95%86%E5%BA%97%E8%A1%97">Google Maps</a><a href="https://osaka-info.jp/experience/en/osaka/spot/210">官方區域</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>道具屋筋商店街</strong><span class="badge">難波</span></div>
+          <p class="meta">南海/Metro 難波站｜步行約 3 分</p>
+          <p class="why">喜歡廚具、餐具、章魚燒器、食物模型可以逛。比主街更有主題。</p>
+          <div class="tags"><span class="tag">廚具</span><span class="tag">伴手禮</span><span class="tag">短時間</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E5%8D%83%E6%97%A5%E5%89%8D%E9%81%93%E5%85%B7%E5%B1%8B%E7%AD%8B%E5%95%86%E5%BA%97%E8%A1%97">Google Maps</a><a href="https://osaka-info.jp/experience/en/osaka/spot/205">官方頁</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>難波八阪神社</strong><span class="badge">難波</span></div>
+          <p class="meta">南海/Metro 難波站｜步行約 6-10 分</p>
+          <p class="why">獅子殿很有辨識度，住宿在心齋橋時可當 Day3 或 Day8 短時間補點。</p>
+          <div class="tags"><span class="tag">神社</span><span class="tag">短時間</span><span class="tag">拍照</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E9%9B%A3%E6%B3%A2%E5%85%AB%E9%98%AA%E7%A5%9E%E7%A4%BE">Google Maps</a><a href="https://osaka-info.jp/en/spot/namba-yasaka-shrine/">官方頁</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>黑門市場</strong><span class="badge">日本橋</span></div>
+          <p class="meta">日本橋站｜步行約 2-5 分</p>
+          <p class="why">從心齋橋/難波很近，適合白天小吃或買水果海鮮。注意觀光客多、價格落差大。</p>
+          <div class="tags"><span class="tag">市場</span><span class="tag">小吃</span><span class="tag">白天</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E9%BB%91%E9%96%80%E5%B8%82%E5%A0%B4%20%E5%A4%A7%E9%98%AA">Google Maps</a><a href="https://osaka-info.jp/en/spot/kuromon-market/">官方頁</a></div>
+        </article>
+      </div>
+
+      <h3 id="tennoji">天王寺・阿倍野</h3>
+      <div class="grid">
+        <article class="card">
+          <div class="card-title"><strong>阿倍野 Harukas 300</strong><span class="badge">天王寺</span></div>
+          <p class="meta">JR/Metro 天王寺站・近鐵大阪阿部野橋站直結</p>
+          <p class="why">你原行程已有阿倍野觀景台，這區非常適合搭車自由行，站內直結、省時間。</p>
+          <div class="tags"><span class="tag">展望台</span><span class="tag">直結</span><span class="tag">夜景</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E3%81%82%E3%81%B9%E3%81%AE%E3%83%8F%E3%83%AB%E3%82%AB%E3%82%B9%20300">Google Maps</a><a href="https://osaka-info.jp/experience/en/osaka/spot/376">官方頁</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>天王寺公園 Tenshiba・新世界</strong><span class="badge">天王寺/動物園前</span></div>
+          <p class="meta">天王寺站或動物園前站｜步行串接</p>
+          <p class="why">可把阿倍野、通天閣、新世界串成一段。走路多，但不用複雜轉乘。</p>
+          <div class="tags"><span class="tag">散步</span><span class="tag">通天閣</span><span class="tag">大阪感</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A9%E7%8E%8B%E5%AF%BA%E5%85%AC%E5%9C%92%20Tenshiba%20%E6%96%B0%E4%B8%96%E7%95%8C">Google Maps</a><a href="https://osaka-info.jp/experience/en/osaka/spot/284">官方區域</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>四天王寺</strong><span class="badge">四天王寺前夕陽ヶ丘</span></div>
+          <p class="meta">谷町線 四天王寺前夕陽ヶ丘站｜步行約 5 分</p>
+          <p class="why">天王寺/阿倍野附近想加一個寺院系景點可排。比大阪城安靜，適合早上或下午。</p>
+          <div class="tags"><span class="tag">寺院</span><span class="tag">天王寺附近</span><span class="tag">半天備案</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E5%9B%9B%E5%A4%A9%E7%8E%8B%E5%AF%BA%20%E5%A4%A7%E9%98%AA">Google Maps</a><a href="https://osaka-info.jp/en/spot/shitennoji-temple/">官方頁</a></div>
+        </article>
+      </div>
+
+      <h3 id="osaka-castle">大阪城</h3>
+      <div class="grid">
+        <article class="card">
+          <div class="card-title"><strong>大阪城公園・天守閣</strong><span class="badge">森之宮</span></div>
+          <p class="meta">森之宮 / 大阪城公園 / 谷町四丁目｜站旁入園</p>
+          <p class="why">你原行程有大阪城。建議從森之宮進，動線清楚；天守閣本體要走一段。</p>
+          <div class="tags"><span class="tag">公園</span><span class="tag">城</span><span class="tag">步行多</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%85%AC%E5%9C%92%20%E5%A4%A9%E5%AE%88%E9%96%A3">Google Maps</a><a href="https://osaka-info.jp/experience/en/osaka/spot/256">官方公園</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>JO-TERRACE Osaka・水上巴士</strong><span class="badge">大阪城公園</span></div>
+          <p class="meta">JR 大阪城公園站｜步行數分</p>
+          <p class="why">吃飯休息比公園內方便。時間足夠可加水上路線，適合不想只逛城的人。</p>
+          <div class="tags"><span class="tag">休息</span><span class="tag">水岸</span><span class="tag">接午餐</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=JO-TERRACE%20Osaka%20%E5%A4%A7%E9%98%AA%E5%9F%8E%E5%85%AC%E5%9C%92">Google Maps</a><a href="https://osaka-info.jp/experience/en/osaka/spot/200">官方大阪城</a></div>
+        </article>
+      </div>
+
+      <h3 id="bay">大阪港・海遊館</h3>
+      <div class="grid">
+        <article class="card">
+          <div class="card-title"><strong>海遊館</strong><span class="badge">大阪港</span></div>
+          <p class="meta">大阪 Metro 中央線 大阪港站｜步行約 5 分</p>
+          <p class="why">你原行程有海遊館。官方資訊顯示離大阪港站很近，雨天也穩。</p>
+          <div class="tags"><span class="tag">水族館</span><span class="tag">雨天</span><span class="tag">半天以上</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E6%B5%B7%E9%81%8A%E9%A4%A8">Google Maps</a><a href="https://osaka-info.jp/experience/en/osaka/spot/289">官方頁</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>天保山摩天輪・Marketplace</strong><span class="badge">大阪港</span></div>
+          <p class="meta">大阪港站｜與海遊館同區</p>
+          <p class="why">和海遊館自然串接，不需要移動。適合把 Day6 做成一整天的港區行程。</p>
+          <div class="tags"><span class="tag">摩天輪</span><span class="tag">商場</span><span class="tag">親子</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A9%E4%BF%9D%E5%B1%B1%E5%A4%A7%E8%A6%B3%E8%A6%A7%E8%BB%8A%20Marketplace">Google Maps</a><a href="https://discover.osaka-info.jp/en/spots/kaiyukan">官方介紹</a></div>
+        </article>
+      </div>
+
+      <h3 id="nakanoshima">中之島・淀屋橋</h3>
+      <div class="grid">
+        <article class="card">
+          <div class="card-title"><strong>中之島公園・中央公會堂周邊</strong><span class="badge">淀屋橋/北濱</span></div>
+          <p class="meta">京阪/Metro 淀屋橋、北濱、なにわ橋｜步行數分</p>
+          <p class="why">比難波梅田安靜，適合想看近代建築、河邊散步、咖啡。晴天半天很好排。</p>
+          <div class="tags"><span class="tag">河岸</span><span class="tag">建築</span><span class="tag">咖啡</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%AD%E4%B9%8B%E5%B3%B6%E5%85%AC%E5%9C%92%20%E5%A4%A7%E9%98%AA%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%85%AC%E6%9C%83%E5%A0%82">Google Maps</a><a href="https://osaka-info.jp/experience/en/osaka/spot/603">官方區域</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>大阪市立東洋陶磁美術館・北濱咖啡街</strong><span class="badge">なにわ橋/北濱</span></div>
+          <p class="meta">京阪 なにわ橋站/北濱站｜步行數分</p>
+          <p class="why">中之島散步的室內備案。適合雨天、想避開購物區時安排。</p>
+          <div class="tags"><span class="tag">美術館</span><span class="tag">雨天</span><span class="tag">咖啡</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E9%98%AA%E5%B8%82%E7%AB%8B%E6%9D%B1%E6%B4%8B%E9%99%B6%E7%A3%81%E7%BE%8E%E8%A1%93%E9%A4%A8%20%E5%8C%97%E6%BF%B1">Google Maps</a><a href="https://osaka-info.jp/en/spot/the-museum-of-oriental-ceramics-osaka/">官方頁</a></div>
+        </article>
+      </div>
+
+      <h3 id="tenma">天滿・天神橋筋</h3>
+      <div class="grid">
+        <article class="card">
+          <div class="card-title"><strong>天神橋筋商店街</strong><span class="badge">天滿/扇町</span></div>
+          <p class="meta">天神橋筋六丁目、扇町、南森町、JR 天滿｜多站可進出</p>
+          <p class="why">OSAKA-INFO 介紹為日本最長商店街，雨天也好逛。Day7 或晚餐前後可替代梅田百貨。</p>
+          <div class="tags"><span class="tag">商店街</span><span class="tag">雨天</span><span class="tag">在地感</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A9%E7%A5%9E%E6%A9%8B%E7%AD%8B%E5%95%86%E5%BA%97%E8%A1%97">Google Maps</a><a href="https://osaka-info.jp/en/spot/tenjimbashisuji-shopping-street/">官方頁</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>大阪生活今昔館</strong><span class="badge">天神橋筋六丁目</span></div>
+          <p class="meta">大阪 Metro 天神橋筋六丁目站｜站旁大樓內</p>
+          <p class="why">室內博物館，適合雨天或不想逛商場時。可和天神橋筋商店街排同半天。</p>
+          <div class="tags"><span class="tag">博物館</span><span class="tag">室內</span><span class="tag">雨天備案</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E9%98%AA%E7%94%9F%E6%B4%BB%E4%BB%8A%E6%98%94%E9%A4%A8">Google Maps</a><a href="https://osaka-info.jp/en/spot/osaka-museum-housing-living/">官方頁</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>大阪天滿宮</strong><span class="badge">南森町</span></div>
+          <p class="meta">南森町站 / 大阪天滿宮站｜步行約 3-5 分</p>
+          <p class="why">天神橋筋南側順路景點。想把商店街行程變得不只是逛街，可以一起排。</p>
+          <div class="tags"><span class="tag">神社</span><span class="tag">商店街旁</span><span class="tag">短時間</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E9%98%AA%E5%A4%A9%E6%BB%BF%E5%AE%AE">Google Maps</a><a href="https://osaka-info.jp/en/spot/osaka-tenmangu-shrine/">官方頁</a></div>
+        </article>
+      </div>
+
+      <h3 id="nagai">長居</h3>
+      <div class="grid">
+        <article class="card">
+          <div class="card-title"><strong>teamLab Botanical Garden Osaka</strong><span class="badge">長居</span></div>
+          <p class="meta">大阪 Metro 御堂筋線 長居站｜步行約 10 分</p>
+          <p class="why">夜間光影展，和白天景點不同。若 Day7 晚上想加一個非購物行程，可以從天王寺/心齋橋搭御堂筋線過去。</p>
+          <div class="tags"><span class="tag">夜間</span><span class="tag">光影</span><span class="tag">需看天氣</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=teamLab%20Botanical%20Garden%20Osaka">Google Maps</a><a href="https://discover.osaka-info.jp/en/spots/teamlab-botanicalgarden">官方介紹</a></div>
+        </article>
+        <article class="card">
+          <div class="card-title"><strong>長居公園・大阪市立自然史博物館</strong><span class="badge">長居</span></div>
+          <p class="meta">長居站｜公園入口步行可達</p>
+          <p class="why">白天散步或親子備案。若晚上要 teamLab，可下午先到長居公園。</p>
+          <div class="tags"><span class="tag">公園</span><span class="tag">博物館</span><span class="tag">親子</span></div>
+          <div class="actions"><a href="https://www.google.com/maps/search/?api=1&query=%E9%95%B7%E5%B1%85%E5%85%AC%E5%9C%92%20%E5%A4%A7%E9%98%AA%E5%B8%82%E7%AB%8B%E8%87%AA%E7%84%B6%E5%8F%B2%E5%8D%9A%E7%89%A9%E9%A4%A8">Google Maps</a><a href="https://osaka-info.jp/en/special/universal/tourism/nagaibotanicalpark/">官方頁</a></div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer id="sources">
+    <strong>來源</strong><br>
+    京都：Kyoto City Official Travel Guide 的京都車站、伏見、中央京都與鐵道交通頁。<br>
+    大阪：OSAKA-INFO 的梅田、難波/心齋橋、天王寺/阿倍野、大阪城、海遊館與中之島相關頁。<br>
+    實際營業時間、票價、休館日可能變動，出發前以各官方頁為準。
+  </footer>
+</body>
+</html>
