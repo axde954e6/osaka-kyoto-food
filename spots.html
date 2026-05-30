@@ -38,6 +38,45 @@
       color: var(--muted);
       font-size: 14px;
     }
+    .photo-hero {
+      height: clamp(180px, 42vw, 280px);
+      overflow: hidden;
+      position: relative;
+      border-bottom: 1px solid var(--line);
+      background: #18211f;
+    }
+    .photo-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .photo-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.32));
+      pointer-events: none;
+    }
+    .hero-caption {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 12px;
+      z-index: 1;
+      color: #fff;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.45);
+    }
+    .hero-caption strong {
+      display: block;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+    .hero-caption span {
+      display: block;
+      margin-top: 2px;
+      font-size: 12px;
+    }
     nav {
       position: sticky;
       top: 0;
@@ -300,6 +339,11 @@
     <h1>大阪・京都車站附近景點</h1>
     <p class="note">搭車自由行用。優先挑車站旁、少轉乘、可彈性塞進半天或雨天的景點。</p>
   </header>
+
+  <div class="photo-hero" aria-label="大阪京都風景橫幅">
+    <img src="assets/osaka-kyoto-hero.png" alt="大阪城市夜景與京都傳統街景風格橫幅">
+    <div class="hero-caption"><strong>Kyoto slow streets, Osaka city lights</strong><span>車站附近、少轉乘、可彈性安排的景點</span></div>
+  </div>
 
   <nav>
     <a href="index.html">美食清單</a>
@@ -907,6 +951,7 @@
     <strong>來源</strong><br>
     京都：Kyoto City Official Travel Guide 的京都車站、伏見、中央京都與鐵道交通頁。<br>
     大阪：OSAKA-INFO 的梅田、難波/心齋橋、天王寺/阿倍野、大阪城、海遊館與中之島相關頁。<br>
+    頁首風景圖：京都清水寺眺望、Osaka cityscape in the early evening，來源 Wikimedia Commons。<br>
     實際營業時間、票價、休館日可能變動，出發前以各官方頁為準。
   </footer>
 </body>

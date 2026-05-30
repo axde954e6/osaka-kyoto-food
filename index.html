@@ -43,6 +43,45 @@
       color: var(--muted);
       font-size: 13px;
     }
+    .photo-hero {
+      height: clamp(180px, 42vw, 280px);
+      overflow: hidden;
+      position: relative;
+      border-bottom: 1px solid var(--line);
+      background: #17211f;
+    }
+    .photo-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .photo-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.36));
+      pointer-events: none;
+    }
+    .hero-caption {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 14px;
+      z-index: 1;
+      color: #fff;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+    }
+    .hero-caption strong {
+      display: block;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+    .hero-caption span {
+      display: block;
+      margin-top: 2px;
+      font-size: 12px;
+    }
     nav {
       display: flex;
       gap: 8px;
@@ -316,6 +355,10 @@
     <h1>大阪・京都行程美食清單</h1>
     <p class="note">依 2026/05/29 Tabelog 查詢整理；2026/05/30 已移除閉店店家並修正 Tabelog 連結。分數、營業日、預約狀態會變動，出發前請再點 Tabelog 確認。</p>
   </header>
+  <div class="photo-hero" aria-label="大阪京都風景橫幅">
+    <img src="assets/osaka-kyoto-hero.png" alt="大阪城市夜景與京都傳統街景風格橫幅">
+    <div class="hero-caption"><strong>Kyoto slow streets, Osaka city lights</strong><span>京都町家氛圍與大阪夜景，行程美食地圖</span></div>
+  </div>
   <nav>
     <a href="#daily">每日動線</a>
     <a href="#area">地區分類</a>
