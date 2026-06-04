@@ -24,7 +24,7 @@
       line-height: 1.55;
     }
     header {
-      padding: 22px 16px 14px;
+      padding: 24px 16px 16px;
       background: #fffdf8;
       border-bottom: 1px solid var(--line);
     }
@@ -39,9 +39,7 @@
       font-size: 14px;
     }
     .photo-hero {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      height: clamp(180px, 42vw, 280px);
+      height: clamp(210px, 44vw, 320px);
       overflow: hidden;
       position: relative;
       border-bottom: 1px solid var(--line);
@@ -71,7 +69,7 @@
     }
     .hero-caption strong {
       display: block;
-      font-size: 18px;
+      font-size: 20px;
       letter-spacing: 0;
     }
     .hero-caption span {
@@ -90,7 +88,9 @@
       background: rgba(247, 245, 239, 0.96);
       border-bottom: 1px solid var(--line);
       -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
+    nav::-webkit-scrollbar { display: none; }
     nav a, .jump-links a, .actions a {
       flex: 0 0 auto;
       color: var(--accent);
@@ -101,9 +101,28 @@
       padding: 8px 11px;
       font-size: 13px;
       font-weight: 700;
+      transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
     }
-    main { padding: 14px 12px 28px; max-width: 980px; margin: 0 auto; }
-    section { margin: 18px 0 26px; }
+    nav a:hover, .jump-links a:hover, .actions a:hover, .map-links a:hover {
+      border-color: var(--accent);
+      background: var(--soft);
+    }
+    main { padding: 18px 12px 34px; max-width: 1040px; margin: 0 auto; }
+    section { margin: 22px 0 32px; }
+    main > section > h2 {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    main > section > h2::before {
+      content: "";
+      width: 5px;
+      height: 22px;
+      border-radius: 3px;
+      background: var(--accent-2);
+    }
     .city-section {
       margin: 28px -12px 34px;
       padding: 18px 12px 22px;
@@ -169,7 +188,8 @@
       border: 1px solid var(--line);
       border-left: 5px solid var(--accent);
       border-radius: 8px;
-      padding: 12px;
+      padding: 14px;
+      box-shadow: 0 3px 12px rgba(32, 35, 31, 0.06);
     }
     .day-card.kyoto-day { border-left-color: #8b4b2b; }
     .day-card.osaka-day { border-left-color: #2f6f65; }
@@ -277,7 +297,8 @@
       background: var(--card);
       border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 12px;
+      padding: 14px;
+      box-shadow: 0 2px 10px rgba(32, 35, 31, 0.05);
     }
     .card-title {
       display: flex;
@@ -339,6 +360,7 @@
       padding: 7px 10px;
       font-size: 13px;
       font-weight: 700;
+      transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
     }
     .table-wrap {
       overflow-x: auto;
@@ -400,6 +422,8 @@
     }
     @media (min-width: 760px) {
       .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .day-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .day-card:first-child, .day-card:nth-child(2), .day-card:nth-child(3) { grid-column: 1 / -1; }
       .city-section {
         margin-left: 0;
         margin-right: 0;
@@ -419,9 +443,8 @@
   </header>
 
   <div class="photo-hero" aria-label="大阪京都風景橫幅">
-    <img src="assets/kyoto-real-hero.jpg" alt="京都清水寺夜景與塔">
-    <img src="assets/osaka-real-hero.jpg" alt="大阪梅田傍晚城市景色">
-    <div class="hero-caption"><strong>Kyoto temples, Osaka skyline</strong><span>車站附近、少轉乘、可彈性安排的景點</span></div>
+    <img src="assets/kyoto-hero-optimized.jpg" alt="京都清水寺夜間楓葉與塔">
+    <div class="hero-caption"><strong>京都・大阪自由行</strong><span>車站附近、少轉乘、可彈性安排的景點</span></div>
   </div>
 
   <nav>
@@ -1079,7 +1102,7 @@
     <strong>來源</strong><br>
     京都：Kyoto City Official Travel Guide 的京都車站、伏見、中央京都與鐵道交通頁。<br>
     大阪：OSAKA-INFO 的梅田、難波/心齋橋、天王寺/阿倍野、大阪城、海遊館與中之島相關頁。<br>
-    頁首實景圖：<a href="https://commons.wikimedia.org/wiki/File:Kiyomizu-dera,_Kyoto,_November_2016_-05.jpg">京都清水寺夜景</a> by Martin Falbisoner / CC BY-SA 4.0；<a href="https://commons.wikimedia.org/wiki/File:Evening_cityscape_of_Osaka.jpg">大阪梅田傍晚市景</a> by Benlisquare / CC BY-SA 4.0。<br>
+    頁首實景圖：<a href="https://commons.wikimedia.org/wiki/File:Kiyomizu-dera,_Kyoto,_November_2016_-05.jpg">京都清水寺夜景</a> by Martin Falbisoner / CC BY-SA 4.0；網站使用壓縮裁切版本。<br>
     實際營業時間、票價、休館日可能變動，出發前以各官方頁為準。
   </footer>
   <a class="back-top" href="#top" aria-label="回到最上方">↑</a>
